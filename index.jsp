@@ -1,266 +1,127 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <base href="<%=basePath%>">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>首页 ·医院预约平台后台管理 </title>
+    <link rel="stylesheet" href="http://127.0.0.1:8080/${pageContext.request.contextPath}/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8080/${pageContext.request.contextPath}/css/style.css">
+    <link rel="icon" href="http://127.0.0.1:8080/${pageContext.request.contextPath}/image/code.png">
+</head>
+<body>
+
+<!-- admin -->
+<div class="layui-layout layui-layout-admin"> <!-- 添加skin-1类可手动修改主题为纯白，添加skin-2类可手动修改主题为蓝白 -->
+    <!-- header -->
+    <div class="layui-header my-header">
+        <ul class="layui-nav" lay-filter="side-left"><li class="layui-layout layui-layout-admin">&nbsp; &nbsp; <dl>
+                                      今天是  <script>
+                                            var weekDayLabels = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+                                            var now = new Date();
+                                            var year = now.getFullYear();
+                                            var month = now.getMonth() + 1;
+                                            var day = now.getDate()
+                                            var currentime = year + "年" + month + "月" + day + "日 " + weekDayLabels[now.getDay()]
+                                            document.write(currentime);
+                 </script>
+        </dl></li></ul>
+          <ul class="layui-nav my-header-user-nav" lay-filter="side-right">
+              <li class="layui-nav-item">
+                  <a class="name" href="javascript:;"><i class="layui-icon">&#xe629;</i>主题</a>
+                  <dl class="layui-nav-child">
+                    <dd data-skin="0"><a href="javascript:;">默认</a></dd>
+                    <dd data-skin="1"><a href="javascript:;">纯白</a></dd>
+                    <dd data-skin="2"><a href="javascript:;">蓝白</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a class="name" href="javascript:;"><img src="image/code.png" alt="logo"><%=(String)session.getAttribute("loginuser") %></a>
+                <dl class="layui-nav-child">
+              		  <dd><a href="javascript:;" id="MyMessage" ><i class="layui-icon">&#xe621;</i>个人信息</a></dd>
+              	<dd>
+					<a href="javascript:;" id="logout"><i class="layui-icon" aria-hidden="true"></i> 注销</a>
+			    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+    <!-- side -->
+    <div class="layui-side my-side">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" lay-filter="side">
+                <li class="layui-nav-item layui-nav-itemed"><!-- 去除 layui-nav-itemed 即可关闭展开 -->
+                    <a href="javascript:;"><i class="layui-icon">&#xe620;</i>菜单栏</a>
+                    <dl class="layui-nav-child">
+                    <s:iterator value="set">
+                        <dd class="layui-nav-item"><a href="javascript:;" href-url='<s:property value="url"/>'><i class="layui-icon">&#xe621;</i><s:property value="name"/></a></dd>
+                   </s:iterator>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
     
-    <title>主页面</title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
-	<meta name="keywords" content="free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
-	
-
-  	
-
-  	<!-- Facebook and Twitter integration -->
-	<meta property="og:title" content=""/>
-	<meta property="og:image" content=""/>
-	<meta property="og:url" content=""/>
-	<meta property="og:site_name" content=""/>
-	<meta property="og:description" content=""/>
-	<meta name="twitter:title" content="" />
-	<meta name="twitter:image" content="" />
-	<meta name="twitter:url" content="" />
-	<meta name="twitter:card" content="" />
-
-	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	<link rel="shortcut icon" href="favicon.ico">
-
-	<link href='https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
-	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-	
-	<!-- Animate.css -->
-	<link rel="stylesheet" href="css/animate.css">
-	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="css/icomoon.css">
-	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="css/bootstrap.css">
-	<!-- Owl Carousel -->
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/owl.theme.default.min.css">
-	<!-- Theme style  -->
-	<link rel="stylesheet" href="css/style.css">
-
-	<!-- Modernizr JS -->
-	<script src="js/modernizr-2.6.2.min.js"></script>
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->
-
-	</head>
- <body> 
-  <div id="fh5co-page">
-		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
-		<aside id="fh5co-aside" role="complementary" class="border js-fullheight">
-
-			<h1 id="fh5co-logo"><a href="index.html"><img src="images/logo-colored.png" alt="Free HTML5 Bootstrap Website Template"></a></h1>
-			<nav id="fh5co-main-menu" role="navigation">
-				<ul>
-					<li class="fh5co-active"><a href="index.jsp">上传图片</a></li>
-					<li><a href="addClassify.jsp">添加分类</a></li>
-				</ul>
-			</nav>
-
-			
-
-		</aside>
-        <div class="copyrights"> <a href="http://www.cssmoban.com/" ></a></div>
-
-		<div id="fh5co-main">
-			<div class="fh5co-gallery">
-
-				<a class="gallery-item" href="#">
-					<img src="images/work_1.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>大自然</h2>
-						<span>4 张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_2.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>人物</h2>
-						<span>7 张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_3.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>天空</h2>
-						<span>2 张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_4.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>建筑</h2>
-						<span>2  张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_5.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>人物 2</h2>
-						<span>1 张</span>
-					</span>
-				</a>
-				
-				<a class="gallery-item" href="#">
-					<img src="images/work_6.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>海滩</h2>
-						<span>4  张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_7.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>美食</h2>
-						<span>3 张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_8.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>旅游</h2>
-						<span>9 张</span>
-					</span>
-				</a>
-
-				<a class="gallery-item" href="#">
-					<img src="images/work_9.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>家族</h2>
-						<span>2 张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_10.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>食物</h2>
-						<span>10 张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_11.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>玩具</h2>
-						<span>2 张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_12.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>汽车</h2>
-						<span>5  张</span>
-					</span>
-				</a>
-
-				<a class="gallery-item" href="#">
-					<img src="images/work_13.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>动物</h2>
-						<span>4 张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_14.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>建筑 2</h2>
-						<span>1 张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_15.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>气球</h2>
-						<span>1 张</span>
-					</span>
-				</a>
-				<a class="gallery-item" href="#">
-					<img src="images/work_16.jpg" alt="Free HTML5 Bootstrap Template by FreeHTML5.co">
-					<span class="overlay">
-						<h2>动物 2</h2>
-						<span>2 张</span>
-					</span>
-				</a>
-			</div>
-
-
-			<div class="fh5co-counters" style="background-image: url(images/hero.jpg);" data-stellar-background-ratio="0.5" id="counter-animate">
-				<div class="fh5co-narrow-content animate-box">
-					<div class="row" >
-						<div class="col-md-4 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="7" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">用户</span>
-						</div>
-						<div class="col-md-4 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="52" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">图片</span>
-						</div>
-						<div class="col-md-4 text-center">
-							<span class="fh5co-counter js-counter" data-from="0" data-to="7232" data-speed="5000" data-refresh-interval="50"></span>
-							<span class="fh5co-counter-label">像素</span>
-						</div>
-					</div>
-				</div>
-			</div>
+    <!-- body -->
+    <div class="layui-body my-body">
+        <div class="layui-tab layui-tab-card my-tab" lay-filter="card">
+            <ul class="layui-tab-title">
+                <li class="layui-this" lay-id="0"><span>系统配置</span></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <iplugins id="iplugins" src="demo/welcome.html" pluginsborder="1"></iplugins>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="layui-footer my-footer">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="" target="_blank">预约平台后台管理系统v1.1.0</a></p>
+        <p>2017 ? copyright 石家庄铁道大学</p>
+    </div>
+</div>
+<script type="text/javascript" src="frame/layui/layui.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+				layui.use('layer', function() {
+					var $ = layui.jquery,
+						layer = layui.layer;
+					$('#logout').on('click', function()
+					 {
+						layer.open({
+						  title:'提示',
+						  content: '真的要退出系统么？'
+						  ,btn: ['是的', '我再想想']
+						  ,btn1: function(index, layero){
+						    window.location="login.jsp";
+						  }
+						  ,btn2: function(index, layero){
+							return;
+						  }
+							});
+						});
+						
+						$('#MyMessage').on('click', function()
+                     {
+                        layer.open({
+                             title: '个人信息',
+                             maxmin: true,
+                             type:2,
+                            content: 'UserMessage.action',
+                            area: ['650px', '600px']
+                            });
+                        });
+				});
+			</script>
 		
-
-			<div class="fh5co-narrow-content">
-				<div class="row">
-					<div class="col-md-4 animate-box" data-animate-effect="fadeInLeft">
-						<h1 class="fh5co-heading-colored">上传图片</h1>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12 animate-box" data-animate-effect="fadeInLeft">
-						<p class="fh5co-lead">通过点击上传按钮，选择本地图片，然后上传到服务器</p>
-						<p>
-						<form name="myform" id="myform" action="servlet/ImportImageServlet" enctype="multipart/form-data"
-			             method="post">
-			             <input type="file" id="seed" name="seed">
-			             <button id="save" class="btn btn-primary btn-outline">上  传</button>
-		                </form>
-						<!-- <a href="#" class="btn btn-primary btn-outline">上  传</a> -->
-						</p>
-					</div>
-					
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
-	<!-- jQuery Easing -->
-	<script src="js/jquery.easing.1.3.js"></script>
-	<!-- Bootstrap -->
-	<script src="js/bootstrap.min.js"></script>
-	<!-- Carousel -->
-	<script src="js/owl.carousel.min.js"></script>
-	<!-- Stellar -->
-	<script src="js/jquery.stellar.min.js"></script>
-	<!-- Waypoints -->
-	<script src="js/jquery.waypoints.min.js"></script>
-	<!-- Counters -->
-	<script src="js/jquery.countTo.js"></script>
-	
-	
-	<!-- MAIN JS -->
-	<script src="js/main.js"></script>
-
-	</body>
+  </body>
 </html>
